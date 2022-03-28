@@ -1,0 +1,51 @@
+
+version: 2
+
+models:
+  - name: ups_invoices_bycharge
+    description: "UPS Invoices by Customer and Charge Category"
+    columns:
+      - name: CustomerName
+        description: "Customer Name"
+        tests:
+          - not_null
+      - name: ResellerName
+        description: "Reseller Name"
+      - name: InvoiceNumber
+        description: "Invoice Number"
+      - name: "LeadShipmentNumber"
+        description: "Shipment Number"
+      - name: ChargeClassificationCode
+        description: "UPS code identifying charge class"
+        tests:
+          - accepted_values:
+              values: ['FRT', 'FSC', 'ACC', 'INF', 'MSC', 'GOV', 'BRK']
+      - name: ChargeCategory
+        description: "ChargeClassificationCode bucketed into 4 categories. [Freight, Accessorial & Miscellaneous, Fuel surcharge, Other]"
+        tests:
+          - accepted_values:
+              values: ['Freight', 'Fuel surcharge', 'Other', 'Accessorial & Miscellaneous']
+      - name: IncentiveAmount
+        description: "$ amount saved with discounts"
+      - name: NetAmount
+        description: "$ amount paid after discounts are applied"
+      - name: TotalAmount
+        description: "Incentive amount + Net amount"
+      - name: Incentive%
+        description: "Incentive amount / Total amount"
+
+  - name: fedex_invoices_agg
+    description: "FedEx Invoices by Customer"
+    columns:
+      - name: Customer
+        description: "Customer Name"
+        tests:
+          - not_null
+      - name: ServiceType
+        description: "FedEx service level"
+      - name: TransportationChargeAmount
+        description: "$ paid for transportation costs"
+      - name: NetChargeAmount
+        description: "$ amount paid after discounts are applied"
+      - name: TotalAmount
+        description: "Total amount"
